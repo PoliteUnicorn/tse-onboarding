@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+
 import { Link } from "react-router-dom";
+
 import { updateTask, Task } from "src/api/tasks";
 import { CheckButton } from "src/components";
 import styles from "src/components/TaskItem.module.css";
@@ -15,6 +17,7 @@ export function TaskItem({ task: initialTask }: TaskItemProps) {
 
   const handleToggleCheck = () => {
     setLoading(true);
+
     updateTask({ ...task, assignee: task.assignee?._id, isChecked: !task.isChecked }).then(
       (result) => {
         if (result.success) {

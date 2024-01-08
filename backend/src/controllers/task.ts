@@ -102,7 +102,7 @@ export const updateTask: RequestHandler = async (req, res, next) => {
           description: description,
           isChecked: isChecked,
           assignee: assignee,
-        },
+
       );
 
       if (task === null) {

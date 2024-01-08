@@ -114,8 +114,8 @@ export async function getAllTasks(): Promise<APIResult<Task[]>> {
 }
 
 export async function updateTask(task: UpdateTaskRequest): Promise<APIResult<Task>> {
-  try {
-    const response = await put(`/api/task/${task._id}`, task); /*should be put */
+  try {    const response = await put(`/api/task/${task._id}`, task); /*should be put */
+
     const json = (await response.json()) as TaskJSON;
     return { success: true, data: parseTask(json) };
   } catch (error) {
