@@ -3,13 +3,19 @@ import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Task, getTask } from "src/api/tasks";
+// import { UserTag } from "src/components/UserTag";
 import styles from "src/pages/TaskDetail.module.css";
 
 import { Button, Page } from "src/components";
 
 export function TaskDetail() {
   const [task, setTask] = useState<Task>();
+  //   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { id } = useParams();
+
+  /*
+Set isEditing to true when the "Edit task" button is clicked.
+ */
 
   useEffect(() => {
     getTask(id as string).then((result) => {
@@ -41,7 +47,7 @@ export function TaskDetail() {
   if (task.assignee === undefined) {
     assigneeDisplay = "Not assigned";
   } else {
-    assigneeDisplay = id;
+    assigneeDisplay = task.assignee.name; /* add profile pic */
   }
 
   let taskCompleted;

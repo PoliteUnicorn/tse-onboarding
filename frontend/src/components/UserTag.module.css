@@ -1,0 +1,7 @@
+.profilePicture {
+  border-radius: 50%;
+}
+
+.profilePicture :hover {
+  background-color: var(--color-surface);
+}

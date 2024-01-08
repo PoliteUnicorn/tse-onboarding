@@ -55,3 +55,12 @@ a:hover {
 a:checked {
   color: var(--color-text-secondary);
 }
+
+.userTag {
+  width: 12rem;
+  align-self: right;
+}
+
+.userTag :hover {
+  background-color: var(--color-text-secondary);
+}
