@@ -1,14 +1,17 @@
 .title {
-  font: var(--font-label);
+  font: var(--font-title);
 }
 
-.item {
+.taskContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  width: 100%;
+  justify-content: center;
+  align-items: stretch;
 }
 
-.list {
+.outerContainer {
   margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
 }

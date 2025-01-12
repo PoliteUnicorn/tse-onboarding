@@ -7,6 +7,7 @@ import createHttpError from "http-errors";
 import { validationResult } from "express-validator";
 import TaskModel from "src/models/task";
 import validationErrorParser from "src/util/validationErrorParser";
+import { Model } from "mongoose";
 
 /**
  * This is an example of an Express API request handler. We'll tell Express to
@@ -35,7 +36,6 @@ export const getTask: RequestHandler = async (req, res, next) => {
     if (task === null) {
       throw createHttpError(404, "Task not found.");
     }
-    task.populate("assignee");
 
     // Set the status code (200) and body (the task object as JSON) of the response.
     // Note that you don't need to return anything, but you can still use a return
@@ -50,7 +50,7 @@ export const getTask: RequestHandler = async (req, res, next) => {
 export const createTask: RequestHandler = async (req, res, next) => {
   // extract any errors that were found by the validator
   const errors = validationResult(req);
-  const { title, description, isChecked, assignee } = req.body;
+  const { title, description, isChecked } = req.body;
 
   try {
     // if there are errors, then this function throws an exception
@@ -61,10 +61,7 @@ export const createTask: RequestHandler = async (req, res, next) => {
       description: description,
       isChecked: isChecked,
       dateCreated: Date.now(),
-      assignee: assignee,
     });
-
-    task.populate("assignee");
 
     // 201 means a new resource has been created successfully
     // the newly created task is sent back to the user
@@ -81,40 +78,6 @@ export const removeTask: RequestHandler = async (req, res, next) => {
     const result = await TaskModel.deleteOne({ _id: id });
 
     res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const updateTask: RequestHandler = async (req, res, next) => {
-  const errors = validationResult(req);
-  const { id } = req.params;
-  const { title, description, isChecked, assignee } = req.body;
-
-  try {
-    validationErrorParser(errors);
-
-    if (id === req.body._id) {
-      const task = await TaskModel.findByIdAndUpdate(
-        { _id: id },
-        {
-          title: title,
-          description: description,
-          isChecked: isChecked,
-          assignee: assignee,
-        },
-      );
-
-      if (task === null) {
-        throw createHttpError(404, "Task not found.");
-      }
-
-      task.populate("assignee"); // is this correct?
-
-      res.status(200).json(task);
-    } else {
-      res.status(400);
-    }
   } catch (error) {
     next(error);
   }

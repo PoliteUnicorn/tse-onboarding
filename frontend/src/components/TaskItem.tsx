@@ -1,48 +1,25 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { updateTask, Task } from "src/api/tasks";
-import { CheckButton } from "src/components";
+import { CheckButton } from "src/components/CheckButton";
 import styles from "src/components/TaskItem.module.css";
-import { UserTag } from "src/components/UserTag";
+
+import type { Task } from "src/api/tasks";
 
 export interface TaskItemProps {
   task: Task;
 }
 
-export function TaskItem({ task: initialTask }: TaskItemProps) {
-  const [task, setTask] = useState<Task>(initialTask);
-  const [isLoading, setLoading] = useState<boolean>(false);
-
-  const handleToggleCheck = () => {
-    setLoading(true);
-    updateTask({ ...task, assignee: task.assignee?._id, isChecked: !task.isChecked }).then(
-      (result) => {
-        if (result.success) {
-          setTask(result.data);
-        } else {
-          alert(result.error);
-        }
-        setLoading(false);
-      },
-    );
-  };
-
-  let textContainerClass = styles.textContainer;
+export function TaskItem({ task }: TaskItemProps) {
+  let descriptionColor = styles.textContainer;
   if (task.isChecked) {
-    textContainerClass += ` ${styles.checked} `;
+    descriptionColor += ` ${styles.checked}`;
   }
-
   return (
     <div className={styles.item}>
-      <CheckButton checked={task.isChecked} onPress={handleToggleCheck} disabled={isLoading} />
-      <div className={textContainerClass}>
-        <Link to={"/task/" + task._id}>
-          <span className={styles.title}>{task?.title}</span>
-        </Link>
-        {task.description && <span className={styles.body}>{task?.description}</span>}
-      </div>
-      <div className={styles.userTag}>
-        <UserTag user={task.assignee} />
+      {/* render CheckButton here */}
+      <CheckButton checked={task.isChecked} />
+
+      <div className={descriptionColor}>
+        <span className={styles.title}>{task.title}</span>
+        {task.description && <span className={styles.description}>{task.description}</span>}
       </div>
     </div>
   );
